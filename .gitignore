@@ -1,0 +1,14 @@
+# Игнорировать большие образы и временные файлы
+*.nds
+*.bak
+*.tmp
+*.log
+__pycache__/
+*.pyc
+# Игнорировать артефакты docker, если есть
+*.img
+
+data/full_extracted*
+3th_bin/*
+work/
+.DS_Store

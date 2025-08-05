@@ -1,0 +1,32 @@
+# Многоэтапная сборка для лучшего кеширования
+FROM ubuntu:22.04 AS base
+ENV DEBIAN_FRONTEND=noninteractive
+
+# Этап 1: Установка пакетов (кешируется отдельно)
+FROM base AS packages
+RUN apt-get update && apt-get install -y \
+    build-essential \
+    git \
+    autotools-dev \
+    autoconf \
+    automake \
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/*
+
+# Этап 2: Загрузка и сборка (объединены для правильной работы)
+FROM packages AS build
+WORKDIR /tmp
+RUN git clone https://github.com/devkitPro/ndstool.git
+WORKDIR /tmp/ndstool
+RUN ./autogen.sh && ./configure && make
+
+# Финальный этап: Только готовый ndstool
+FROM ubuntu:22.04 AS final
+COPY --from=build /tmp/ndstool/ndstool /usr/local/bin/
+RUN chmod +x /usr/local/bin/ndstool
+
+# Проверяем работоспособность
+RUN ndstool || true
+
+WORKDIR /work
+CMD ["ndstool", "--help"]
