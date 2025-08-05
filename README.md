@@ -50,6 +50,45 @@
     bash scripts/pack_nds.sh
 ```
 
+
+---
+
+## Установка зависимостей
+
+Скрипты, входящие в проект, используют зависимости, указанные в requirements.txt. Вы можете установить их двумя способами:
+
+### Вариант 1: стандартный venv
+
+```sh
+# Создание виртуального окружения
+python3 -m venv .venv
+
+# Активация окружения
+source .venv/bin/activate  # Linux/macOS
+# или
+.venv\Scripts\activate     # Windows
+
+# Установка зависимостей
+pip install -r requirements.txt
+```
+
+### Вариант 2: с помощью uv
+
+Если установлен инструмент uv, вы можете использовать его вместо pip:
+
+```sh
+# Создание виртуального окружения
+uv venv
+
+# Активация окружения
+source .venv/bin/activate  # Linux/macOS
+# или
+.venv\Scripts\activate     # Windows
+
+# Установка зависимостей
+uv pip install -r requirements.txt
+```
+
 ---
 
 ## Инструменты для работы с ресурсами NDS
